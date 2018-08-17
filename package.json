@@ -1,0 +1,27 @@
+{
+  "name": "froshie",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.293.0",
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.3",
+    "busboy": "^0.2.14",
+    "busboy-body-parser": "^0.3.2",
+    "connect-busboy": "0.0.2",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "pg-promise": "^8.4.5",
+    "pug": "^2.0.3"
+  },
+  "engines": {
+    "node": "8.11.3",
+    "npm": "6.1.0"
+  }
+}
