@@ -44,21 +44,6 @@ Dropzone.options.ibDropzone = {
 };
 
 
-
-// Dropzone.options.ibDropzone = {
-//   paramName: "ibPic", // The name that will be used to transfer the file
-//   maxFilesize: 2, // MB
-//   maxFiles: 1,
-//   autoProcessQueue: false,
-//   accept: function(file, done) {
-//     if (file.name == "justinbieber.jpg") {
-//       done("Naha, you don't.");
-//     }
-//     else { done(); }
-//   }
-// };
-
-
 // var submitButton = document.getElementById("#uploadButton")
 //     //myDropzone = this; // closure
 //

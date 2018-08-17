@@ -30,25 +30,6 @@ var db = pgp(cn);
 
 
 
-// //Heroku Postgres
-// const { Client } = require('pg');
-// const client = new Client({
-//   connectionString: process.env.DATABASE_URL,
-//   ssl: true,
-// });
-// client.connect();
-//
-// function getAllRecords(req, res, next) {
-//   var result = {};
-//   client.query('SELECT * from IB;', (err, result) => {
-//     if (err) throw err;
-//     res.status(200).send(result.rows);
-//     client.end();
-//   });
-// }
-
-
-
 function getAllRecords(req, res, next) {
   db.any('select * from IB')
     .then(function (data) {
