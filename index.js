@@ -112,8 +112,8 @@ app.post('/uploadIB', function (req, res, next){
     console.log("IB url" + ib_url + "!!!!!!!!!!!");
     console.log("IB uploaded successfully to AW3");
 
-    setTimeout(runPython,7000)
-    setTimeout(db.insertRecord,32000);
+    setTimeout(runPython,12000)
+    setTimeout(db.insertRecord,35000);
     res.send("stop")
 
     //res.send("stop")
