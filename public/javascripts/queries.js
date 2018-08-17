@@ -24,6 +24,7 @@ var pg = require('pg')
 var connectionString = "postgres://sbvblqzpwodrow:c65601ca99c5237c9ab0e86f7a842ca4a542fcd1682123cd0d1a4c1052530127@ec2-107-21-98-165.compute-1.amazonaws.com:5432/deuqt6ucu403e0"
 
 function getAllRecords(req, res, next) {
+  pg.defaults.ssl = true;
   pg.connect(connectionString, function(err, client, done) {
      client.query('SELECT * FROM IB', function(err, result) {
         done();
