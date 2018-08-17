@@ -112,8 +112,8 @@ app.post('/uploadIB', function (req, res, next){
     console.log("IB url" + ib_url + "!!!!!!!!!!!");
     console.log("IB uploaded successfully to AW3");
 
-    runPython()
-    setTimeout(db.insertRecord,10000);
+    setTimeout(runPython,7000)
+    setTimeout(db.insertRecord,32000);
     res.send("stop")
 
     //res.send("stop")
@@ -169,6 +169,24 @@ function runPython(){
   process.on('exit', function (code, signal) {
       console.log('child process exited with ' +
             `code ${code} and signal ${signal}`);
+      // setTimeout(function(){
+      //   candidate = {
+      //     name: result[0],
+      //     institution: result[1],
+      //     score: parseInt(result[2]),
+      //     ee: 'B',
+      //     tok: 'B',
+      //
+      //   }
+      //
+      //   console.log("result!!!!!!!!!!!" + result)
+      //   candidate[result[3].toLowerCase()] = parseInt(result[9]);
+      //   candidate[result[4].toLowerCase()] = parseInt(result[10]);
+      //   candidate[result[5].toLowerCase()] = parseInt(result[11]);
+      //   candidate[result[6].toLowerCase()] = parseInt(result[12]);
+      //   candidate[result[7].toLowerCase()] = parseInt(result[13]);
+      //   candidate[result[8].toLowerCase()] = parseInt(result[14]);
+      // }, 7000)
 
       candidate = {
         name: result[0],
@@ -186,6 +204,7 @@ function runPython(){
       candidate[result[6].toLowerCase()] = parseInt(result[12]);
       candidate[result[7].toLowerCase()] = parseInt(result[13]);
       candidate[result[8].toLowerCase()] = parseInt(result[14]);
+
 
   });
 }
