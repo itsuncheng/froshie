@@ -112,9 +112,9 @@ app.post('/uploadIB', function (req, res, next){
     console.log("IB url" + ib_url + "!!!!!!!!!!!");
     console.log("IB uploaded successfully to AW3");
 
-    setTimeout(runPython,12000)
-    setTimeout(db.insertRecord,35000);
-    res.send("stop")
+    // setTimeout(runPython,12000)
+    // setTimeout(db.insertRecord,35000);
+    next()
 
     //res.send("stop")
     // setTimeout(next,)
@@ -124,15 +124,47 @@ app.post('/uploadIB', function (req, res, next){
 
 });
 
-// app.post('/uploadIB', function(req, res, next){
-//
+app.post('/uploadIB', function(req, res, next){
+
+  var spawn = require("child_process").spawn;
+  var process = spawn('python',["./ocr_scripts/ocrspace_example.py", ib_url]);
+  process.stdout.on('data', function(data) {
+      result = data.toString().split(",")
+      // res.send(result[0]);
+      //res.send(data.toString())
+  })
+  process.on('exit', function (code, signal) {
+      console.log('child process exited with ' +
+            `code ${code} and signal ${signal}`);
+
+      candidate = {
+        name: result[0],
+        institution: result[1],
+        score: parseInt(result[2]),
+        ee: 'B',
+        tok: 'B',
+
+      }
+
+      candidate[result[3].toLowerCase()] = parseInt(result[9]);
+      candidate[result[4].toLowerCase()] = parseInt(result[10]);
+      candidate[result[5].toLowerCase()] = parseInt(result[11]);
+      candidate[result[6].toLowerCase()] = parseInt(result[12]);
+      candidate[result[7].toLowerCase()] = parseInt(result[13]);
+      candidate[result[8].toLowerCase()] = parseInt(result[14]);
+
+      next()
+  });
+
+})
+
+// function runPython(){
 //   var spawn = require("child_process").spawn;
 //   var process = spawn('python',["./ocr_scripts/ocrspace_example.py", ib_url]);
 //   process.stdout.on('data', function(data) {
 //       result = data.toString().split(",")
-//       // res.send(result[0]);
-//       //res.send(data.toString())
 //   })
+//
 //   process.on('exit', function (code, signal) {
 //       console.log('child process exited with ' +
 //             `code ${code} and signal ${signal}`);
@@ -146,6 +178,7 @@ app.post('/uploadIB', function (req, res, next){
 //
 //       }
 //
+//       console.log("result!!!!!!!!!!!" + result)
 //       candidate[result[3].toLowerCase()] = parseInt(result[9]);
 //       candidate[result[4].toLowerCase()] = parseInt(result[10]);
 //       candidate[result[5].toLowerCase()] = parseInt(result[11]);
@@ -153,63 +186,11 @@ app.post('/uploadIB', function (req, res, next){
 //       candidate[result[7].toLowerCase()] = parseInt(result[13]);
 //       candidate[result[8].toLowerCase()] = parseInt(result[14]);
 //
-//       next()
-//   });
 //
-// })
+//   });
+// }
 
-function runPython(){
-  var spawn = require("child_process").spawn;
-  var process = spawn('python',["./ocr_scripts/ocrspace_example.py", ib_url]);
-  process.stdout.on('data', function(data) {
-      result = data.toString().split(",")
-      // res.send(result[0]);
-      //res.send(data.toString())
-  })
-  process.on('exit', function (code, signal) {
-      console.log('child process exited with ' +
-            `code ${code} and signal ${signal}`);
-      // setTimeout(function(){
-      //   candidate = {
-      //     name: result[0],
-      //     institution: result[1],
-      //     score: parseInt(result[2]),
-      //     ee: 'B',
-      //     tok: 'B',
-      //
-      //   }
-      //
-      //   console.log("result!!!!!!!!!!!" + result)
-      //   candidate[result[3].toLowerCase()] = parseInt(result[9]);
-      //   candidate[result[4].toLowerCase()] = parseInt(result[10]);
-      //   candidate[result[5].toLowerCase()] = parseInt(result[11]);
-      //   candidate[result[6].toLowerCase()] = parseInt(result[12]);
-      //   candidate[result[7].toLowerCase()] = parseInt(result[13]);
-      //   candidate[result[8].toLowerCase()] = parseInt(result[14]);
-      // }, 7000)
-
-      candidate = {
-        name: result[0],
-        institution: result[1],
-        score: parseInt(result[2]),
-        ee: 'B',
-        tok: 'B',
-
-      }
-
-      console.log("result!!!!!!!!!!!" + result)
-      candidate[result[3].toLowerCase()] = parseInt(result[9]);
-      candidate[result[4].toLowerCase()] = parseInt(result[10]);
-      candidate[result[5].toLowerCase()] = parseInt(result[11]);
-      candidate[result[6].toLowerCase()] = parseInt(result[12]);
-      candidate[result[7].toLowerCase()] = parseInt(result[13]);
-      candidate[result[8].toLowerCase()] = parseInt(result[14]);
-
-
-  });
-}
-
-//app.post('/uploadIB', db.insertRecord);
+app.post('/uploadIB', db.insertRecord);
 
 
 //app.listen(3000);
