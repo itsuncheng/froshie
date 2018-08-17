@@ -62,8 +62,8 @@ def ocr_space_url(url, overlay=False, api_key='477270ac5f88957', language='eng')
 # test_url = ocr_space_url(url='http://ibocr.herokuapp.com/IB.pdf')
 
 
-test_url = ocr_space_url(url='http://ibocr.herokuapp.com/IBcert.png')
-# test_url = ocr_space_url(url=sys.argv[1])
+# test_url = ocr_space_url(url='http://ibocr.herokuapp.com/IBcert.png')
+test_url = ocr_space_url(url=sys.argv[1])
 converted_json = json.loads(test_url)
 parsedtext = converted_json["ParsedResults"][0]["ParsedText"]
 

@@ -160,7 +160,7 @@ app.post('/uploadIB', function (req, res, next){
 
 function runPython(){
   var spawn = require("child_process").spawn;
-  var process = spawn('python',["./ocr_scripts/ocrspace_example.py"]);
+  var process = spawn('python',["./ocr_scripts/ocrspace_example.py", ib_url]);
   process.stdout.on('data', function(data) {
       result = data.toString().split(",")
       // res.send(result[0]);
