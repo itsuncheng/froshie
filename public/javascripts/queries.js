@@ -28,11 +28,10 @@ const client = new Client({
 client.connect();
 
 function getAllRecords(req, res, next) {
-  client.query('SELECT * from IB;', (err, res) => {
+  var result = {};
+  client.query('SELECT * from IB;', (err, result) => {
     if (err) throw err;
-    for (let row of res.rows) {
-      console.log(JSON.stringify(row));
-    }
+    res.status(200).send(result.rows);
     client.end();
   });
 }
