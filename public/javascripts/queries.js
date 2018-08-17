@@ -65,7 +65,7 @@ function getAllRecords(req, res, next) {
   //res.send("Hello")
 }
 
-function insertRecord() {
+function insertRecord(req, res, next) {
 
   var candidate = index.candidate()
   db.none('insert into IB(${this:name}) values (${this:csv})',

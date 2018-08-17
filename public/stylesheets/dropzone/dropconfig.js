@@ -27,17 +27,17 @@ Dropzone.options.ibDropzone = {
   autoProcessQueue: false,
   init: function () {
 
-        var myDropzone = this;
+      var myDropzone = this;
 
-          //-Update selector to match your button
-        $("#uploadButton").click(function (e) {
-            e.preventDefault();
-            myDropzone.processQueue();
-        });
-        myDropzone.on("queuecomplete", function() {
-        //Redirect URL
-          window.location.href = 'results';
-        //setTimeout(function(){window.location.href = 'results';},32000)
+        //-Update selector to match your button
+      $("#uploadButton").click(function (e) {
+          e.preventDefault();
+          myDropzone.processQueue();
+      });
+      myDropzone.on("queuecomplete", function() {
+      //Redirect URL
+        window.location.href = 'results';
+      //setTimeout(function(){window.location.href = 'results';},32000)
 
     });
   }
