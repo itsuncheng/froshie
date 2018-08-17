@@ -71,11 +71,11 @@ function insertRecord() {
   db.none('insert into IB(${this:name}) values (${this:csv})',
     candidate)
     .then(function () {
-      // res.status(200)
-      //   .json({
-      //     status: 'success',
-      //     message: 'Inserted one record'
-      //   });
+      res.status(200)
+        .json({
+          status: 'success',
+          message: 'Inserted one record'
+        });
       //res.send('results');
     })
     .catch(function (err) {

@@ -36,7 +36,7 @@ Dropzone.options.ibDropzone = {
         });
         myDropzone.on("queuecomplete", function() {
         //Redirect URL
-        window.location.href = 'results';
+          window.location.href = 'results';
         //setTimeout(function(){window.location.href = 'results';},32000)
 
     });

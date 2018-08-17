@@ -145,7 +145,8 @@ app.post('/uploadIB', function(req, res, next){
         tok: 'B',
 
       }
-
+      
+      console.log("result!!!!!!!!!!!" + result)
       candidate[result[3].toLowerCase()] = parseInt(result[9]);
       candidate[result[4].toLowerCase()] = parseInt(result[10]);
       candidate[result[5].toLowerCase()] = parseInt(result[11]);
