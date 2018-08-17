@@ -1,4 +1,6 @@
 var promise = require('bluebird');
+var index = require('../../index')
+
 
 var options = {
   // Initialization Options
@@ -15,45 +17,42 @@ const cn = {
 };
 var db = pgp(cn);
 
-// add query functions
-
-var index = require('../../index')
 
 
+//Heroku Postgres
+var pg = require('pg')
+var connectionString = "postgres://sbvblqzpwodrow:c65601ca99c5237c9ab0e86f7a842ca4a542fcd1682123cd0d1a4c1052530127@ec2-107-21-98-165.compute-1.amazonaws.com:5432/deuqt6ucu403e0"
 
 function getAllRecords(req, res, next) {
-  db.any('select * from IB')
-    .then(function (data) {
-      res.status(200)
-        .json({
-          status: 'success',
-          data: data,
-          message: 'Retrieved ALL records'
-        });
-    })
-    .catch(function (err) {
-      return next(err);
-    });
-  //res.send("Hello")
+  pg.connect(connectionString, function(err, client, done) {
+     client.query('SELECT * FROM IB', function(err, result) {
+        done();
+        if(err) return console.error(err);
+        console.log(result.rows);
+     });
+  });
 }
 
-function insertRecord(req, res, next) {
-  // req.body.age = parseInt(req.body.age);
 
-  // candidate = {
-  //   id: 7,
-  //   name: "Jeff",
-  //   institution: "hello",
-  //   score: 41,
-  //   ee: 'B',
-  //   tok: 'B',
-  //   chemistry: 6,
-  //   physics: 6,
-  //   mathematics: 6,
-  //   english: 6,
-  //   french: 6,
-  //   economics: 6
-  // }
+
+
+// function getAllRecords(req, res, next) {
+//   db.any('select * from IB')
+//     .then(function (data) {
+//       res.status(200)
+//         .json({
+//           status: 'success',
+//           data: data,
+//           message: 'Retrieved ALL records'
+//         });
+//     })
+//     .catch(function (err) {
+//       return next(err);
+//     });
+//   //res.send("Hello")
+// }
+
+function insertRecord(req, res, next) {
 
   var candidate = index.candidate()
   db.none('insert into IB(${this:name}) values (${this:csv})',

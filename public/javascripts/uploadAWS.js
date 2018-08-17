@@ -10,6 +10,9 @@ var index = require('../../index')
 
 // Bucket names must be unique across all S3 users
 
+// accessKeyId=AKIAIVPDIH2VMUPXG7NA
+// secretAccessKey=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
+
 var myBucket = 'ibqualification';
 
 
@@ -17,8 +20,8 @@ function uploadFile(file, filetype){
 
   var accesskey = index.accessKeyId();
   var secretAccess = index.secretAccess();
-  // console.log("access key" + accesskey);
-  // console.log("secret access" + secretAccess);
+  console.log("access key" + accesskey);
+  console.log("secret access" + secretAccess);
   AWS.config.update( {accessKeyId: accesskey, secretAccessKey: secretAccess} );
   var s3 = new AWS.S3();
 
