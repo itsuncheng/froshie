@@ -10,9 +10,6 @@ var index = require('../../index')
 
 // Bucket names must be unique across all S3 users
 
-// accessKeyId=AKIAIVPDIH2VMUPXG7NA
-// secretAccessKey=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
-
 var myBucket = 'ibqualification';
 
 
