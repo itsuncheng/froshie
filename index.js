@@ -187,5 +187,5 @@ app.post('/uploadIB', function(req, res, next){
 app.post('/uploadIB', db.insertRecord);
 
 
-app.listen(3000);
-//app.listen(process.env.PORT || 5000);
+//app.listen(3000);
+app.listen(process.env.PORT || 5000);
