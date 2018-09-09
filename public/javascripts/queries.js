@@ -64,6 +64,7 @@ function insertRecord(req, res, next) {
     });
 
   console.log("successfully inserted one record")
+  res.redirect('results')
 }
 
 module.exports = {

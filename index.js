@@ -3,10 +3,12 @@ var app = express();
 require('dotenv').config();
 var path = require('path');
 var bodyParser = require('body-parser')
+var fs = require('fs')
 
 var db = require('./public/javascripts/queries');
 var uploadAWS = require('./public/javascripts/uploadAWS')
 
+var multer  = require('multer');
 
 
 var Busboy = require('busboy');
@@ -36,14 +38,6 @@ var result = ""
 var candidate = {}
 exports.candidate = function(){
   return candidate;
-}
-
-exports.accessKeyId = function(){
-  return process.env.accessKeyId;
-}
-
-exports.secretAccess = function(){
-  return process.env.secretAccessKey;
 }
 
 var candidate_modified = {}
@@ -79,23 +73,55 @@ app.get('/results', function(req, res){
 app.get('/IB', db.getAllRecords);
 
 
-app.post('/uploadPassport', function (req, res, next){
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, __dirname + 'public/database/passport')
+    },
+    filename: (req, file, cb) => {
+      cb(null, file.fieldname + '-' + Date.now())
+    }
+});
+var upload = multer({storage: storage});
 
-  var busboy = new Busboy({ headers: req.headers });
+app.post('/uploadPassport', upload.any(), function (req, res){
+
+  // var busboy = new Busboy({ headers: req.headers });
+  //
+  // //const passport = req.files.file;
+  // busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+  //   console.log("fdgfd");
+  //   fstream = fs.createWriteStream('public/database/passport/' + filename);
+  //   file.pipe(fstream);
+  //
+  // });
+  //
+  // busboy.on('finish', function() {
+  //   console.log("Storage Path:");
+  //   console.log(__dirname + '/public/database/passport/' + 'filename');
+  //   console.log("Passport uploaded successfully");
+  //   //res.writeHead(200, { 'Connection': 'close' });
+  //   res.send('stop');
+  // });
+  //
+  //
+  // return req.pipe(busboy);
+
+  // var fstream;
+  // req.pipe(req.busboy);
+  // req.busboy.on('file', function (fieldname, file, filename) {
+  //   var filePath = path.join(__dirname, '/public/database/passport/', filename);
+  //   fstream = fs.createWriteStream(filePath);
+  //   file.pipe(fstream);
+  //   fstream.on('close', function () {
+  //       console.log('Files saved');
+  //   });
+  // });
 
 
-  busboy.on('finish', function() {
-
-    const passport = req.files.file;
-    console.log(passport);
-    passport_url = uploadAWS.uploadFile(passport, "passport");
-
-    console.log("Passport uploaded successfully to AW3");
-    res.send('stop');
-  });
-
-
-  req.pipe(busboy);
+  console.log(req.files);
+  console.log(req.files.file.path);
+  console.log(req.files.file.type);
+  res.send("stop")
 
 });
 
@@ -103,30 +129,28 @@ app.post('/uploadPassport', function (req, res, next){
 app.post('/uploadIB', function (req, res, next){
   var busboy = new Busboy({ headers: req.headers });
 
+  //const passport = req.files.file;
+  busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+    fstream = fs.createWriteStream(__dirname + '/public/database/IB/' + filename);
+    file.pipe(fstream);
 
-  busboy.on('finish', function() {
-
-    const IBfile = req.files.file;
-    console.log(IBfile);
-    ib_url = uploadAWS.uploadFile(IBfile, "IB");
-    console.log("IB url" + ib_url + "!!!!!!!!!!!");
-    console.log("IB uploaded successfully to AW3");
-
-    // setTimeout(runPython,12000)
-    // setTimeout(db.insertRecord,35000);
-    next()
-
-    //res.send("stop")
-    // setTimeout(next,)
 
   });
-  req.pipe(busboy);
+
+  busboy.on('finish', function() {
+    console.log("IB uploaded successfully");
+    next()
+  });
+
+
+  return req.pipe(busboy);
 
 });
 
 app.post('/uploadIB', function(req, res, next){
 
   var spawn = require("child_process").spawn;
+  ib_url = "http://ibocr.herokuapp.com/IBcert.png"
   var process = spawn('python',["./ocr_scripts/ocrspace_example.py", ib_url]);
   process.stdout.on('data', function(data) {
       result = data.toString().split(",")
@@ -145,7 +169,7 @@ app.post('/uploadIB', function(req, res, next){
         tok: 'B',
 
       }
-      
+
       console.log("result!!!!!!!!!!!" + result)
       candidate[result[3].toLowerCase()] = parseInt(result[9]);
       candidate[result[4].toLowerCase()] = parseInt(result[10]);
@@ -159,40 +183,9 @@ app.post('/uploadIB', function(req, res, next){
 
 })
 
-// function runPython(){
-//   var spawn = require("child_process").spawn;
-//   var process = spawn('python',["./ocr_scripts/ocrspace_example.py", ib_url]);
-//   process.stdout.on('data', function(data) {
-//       result = data.toString().split(",")
-//   })
-//
-//   process.on('exit', function (code, signal) {
-//       console.log('child process exited with ' +
-//             `code ${code} and signal ${signal}`);
-//
-//       candidate = {
-//         name: result[0],
-//         institution: result[1],
-//         score: parseInt(result[2]),
-//         ee: 'B',
-//         tok: 'B',
-//
-//       }
-//
-//       console.log("result!!!!!!!!!!!" + result)
-//       candidate[result[3].toLowerCase()] = parseInt(result[9]);
-//       candidate[result[4].toLowerCase()] = parseInt(result[10]);
-//       candidate[result[5].toLowerCase()] = parseInt(result[11]);
-//       candidate[result[6].toLowerCase()] = parseInt(result[12]);
-//       candidate[result[7].toLowerCase()] = parseInt(result[13]);
-//       candidate[result[8].toLowerCase()] = parseInt(result[14]);
-//
-//
-//   });
-// }
 
 app.post('/uploadIB', db.insertRecord);
 
 
-//app.listen(3000);
-app.listen(process.env.PORT || 5000);
+app.listen(3000);
+//app.listen(process.env.PORT || 5000);

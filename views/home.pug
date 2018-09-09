@@ -83,14 +83,17 @@ html
           h3 IB Certificate
       .row
         .col-sm
-          form(action='/uploadPassport', class='dropzone', id='passportDropzone')
+          form(action='/uploadPassport', name='file', class='dropzone', id='passportDropzone', enctype='multipart/form-data')
         .col-sm
-          form(action='/uploadIB', class='dropzone', id='ibDropzone')
+          form(action='/uploadIB', class='dropzone', id='ibDropzone', enctype='multipart/form-data')
       br
       br
       .row 
         .col-sm     
           .text-center
             button#uploadButton.btn.btn-primary.btn-round Upload
+            form(action='/uploadPassport', enctype='multipart/form-data', method="post")
+              input(type='file', name='file' )
+              input(type='submit' value='Submit')
 
     
