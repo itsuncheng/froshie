@@ -1,6 +1,6 @@
 var AWS = require('aws-sdk');
 var fs =  require('fs');
-var index = require('../../index')
+var index = require('../../server')
 
 
 // var accesskey = index.hello();

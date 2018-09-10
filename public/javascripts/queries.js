@@ -1,5 +1,5 @@
 var promise = require('bluebird');
-var index = require('../../index')
+var index = require('../../server')
 
 
 var options = {
