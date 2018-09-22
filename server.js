@@ -118,9 +118,9 @@ app.post('/uploadPassport', upload.any(), function (req, res){
   // });
 
 
-  console.log(req.files);
-  console.log(req.files.file.path);
-  console.log(req.files.file.type);
+  //console.log(req.files);
+  //console.log(req.files.file.path);
+  //console.log(req.files.file.type);
   res.send("stop")
 
 });
@@ -130,12 +130,12 @@ app.post('/uploadIB', function (req, res, next){
   var busboy = new Busboy({ headers: req.headers });
 
   //const passport = req.files.file;
-  busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-    fstream = fs.createWriteStream(__dirname + '/public/database/IB/' + filename);
-    file.pipe(fstream);
-
-
-  });
+  // busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+  //   fstream = fs.createWriteStream(__dirname + '/public/database/IB/' + filename);
+  //   file.pipe(fstream);
+  //
+  //
+  // });
 
   busboy.on('finish', function() {
     console.log("IB uploaded successfully");
