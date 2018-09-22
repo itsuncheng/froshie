@@ -150,8 +150,9 @@ app.post('/uploadIB', function (req, res, next){
 app.post('/uploadIB', function(req, res, next){
 
   var spawn = require("child_process").spawn;
-  ib_url = "http://ibocr.herokuapp.com/IBcert.png"
-  var process = spawn('python',["./ocr_scripts/ocrspace_example.py", ib_url]);
+  ib_url = "http://ibocr.herokuapp.com/IBcert.png";
+  // var process = spawn('python',["./ocr_scripts/ocrspace_example.py", ib_url]);
+  var process = spawn('python',["./ocr_scripts/ocrspace_example.py",]);
   process.stdout.on('data', function(data) {
       result = data.toString().split(",")
       // res.send(result[0]);
@@ -168,9 +169,9 @@ app.post('/uploadIB', function(req, res, next){
         ee: 'B',
         tok: 'B',
 
-      }
+      };
 
-      console.log("result!!!!!!!!!!!" + result)
+      console.log("result!!!!!!!!!!!" + result);
       candidate[result[3].toLowerCase()] = parseInt(result[9]);
       candidate[result[4].toLowerCase()] = parseInt(result[10]);
       candidate[result[5].toLowerCase()] = parseInt(result[11]);
